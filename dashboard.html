@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VoiceChanger Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f7fb;
+      color: #333;
+    }
+
+    .navbar {
+      background: #007bff;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+
+    .navbar h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .navbar button {
+      background: white;
+      color: #007bff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 2rem auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #007bff;
+      margin-bottom: 1.5rem;
+    }
+
+    #credits {
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+    }
+
+    select, input[type="file"] {
+      width: 100%;
+      padding: 0.7rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    button.action {
+      width: 100%;
+      padding: 0.8rem;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button.action:hover {
+      background: #218838;
+    }
+
+    #status {
+      margin-top: 1rem;
+      text-align: center;
+      color: #17a2b8;
+      font-weight: 500;
+    }
+
+    audio {
+      display: block;
+      margin: 2rem auto 1rem;
+      width: 100%;
+    }
+
+    a.logout {
+      display: block;
+      text-align: center;
+      margin-top: 2rem;
+      color: #007bff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    a.logout:hover {
+      text-decoration: underline;
+    }
+
+    #profileSection {
+      display: none;
+      margin-top: 2rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background-color: #f1f1f1;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .btn-group button {
+      padding: 0.5rem 1rem;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .btn-group button.active {
+      background-color: #0056b3;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <h1>🎙️ VoiceChanger</h1>
+    <button onclick="switchTab('dashboard')">Dashboard</button>
+    <button onclick="switchTab('profile')">Profile</button>
+  </div>
+
+  <div class="container" id="dashboardSection">
+    <h2>🎛️ Dashboard</h2>
+    <p id="credits">Credits: ...</p>
+
+    <label for="voiceType">Select Voice Type:</label>
+    <select id="voiceType">
+      <option>Girl</option>
+      <option>Boy</option>
+      <option>Adult Female</option>
+      <option>Adult Male</option>
+      <option>Cartoon Kid</option>
+      <option>Teen Girl</option>
+      <option>Teen Boy</option>
+    </select>
+
+    <label for="voiceFile">Upload Audio File:</label>
+    <input type="file" id="voiceFile" accept="audio/*">
+
+    <button class="action" onclick="upload()">🎙️ Convert Voice (1000 credits)</button>
+
+    <p id="status"></p>
+    <audio id="resultAudio" controls hidden></audio>
+
+    <a class="logout" href="index.html">🔒 Log out</a>
+  </div>
+
+  <!-- Profile Section -->
+  <div class="container" id="profileSection">
+    <h2>👤 User Profile</h2>
+    <p><strong>Total Voice Conversions:</strong> <span id="conversionCount">0</span></p>
+
+    <h3>Conversion History</h3>
+    <table id="historyTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Filled dynamically -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    let conversionHistory = [];
+
+    async function loadDash() {
+      const r = await fetch('/api/dashboard').then(r => r.json());
+      document.getElementById('credits').innerText = 'Credits: ' + r.credits;
+    }
+
+    function getCurrentTimestamp() {
+      const now = new Date();
+      return now.toLocaleString();
+    }
+
+    async function upload() {
+      const file = document.getElementById('voiceFile').files[0];
+      const type = document.getElementById('voiceType').value;
+      if (!file) {
+        alert('Please select a file.');
+        return;
+      }
+
+      const fd = new FormData();
+      fd.append('voice', file);
+      fd.append('type', type);
+
+      const res = await fetch('/api/voice-change', { method: 'POST', body: fd }).then(r => r.json());
+
+      if (res.error) {
+        alert(res.error);
+        return;
+      }
+
+      // Simulated current voice (for demonstration)
+      const fromVoice = "Original";
+
+      // Update UI
+      document.getElementById('credits').innerText = 'Credits: ' + res.credits;
+      document.getElementById('status').innerText = res.message;
+      const audio = document.getElementById('resultAudio');
+      audio.src = res.fileUrl;
+      audio.hidden = false;
+
+      // Add to history
+      const timestamp = getCurrentTimestamp();
+      conversionHistory.push({ from: fromVoice, to: type, time: timestamp });
+      updateProfileHistory();
+    }
+
+    function updateProfileHistory() {
+      const tableBody = document.querySelector('#historyTable tbody');
+      tableBody.innerHTML = '';
+      conversionHistory.forEach((item, idx) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${idx + 1}</td><td>${item.from}</td><td>${item.to}</td><td>${item.time}</td>`;
+        tableBody.appendChild(row);
+      });
+      document.getElementById('conversionCount').innerText = conversionHistory.length;
+    }
+
+    function switchTab(tab) {
+      if (tab === 'dashboard') {
+        document.getElementById('dashboardSection').style.display = 'block';
+        document.getElementById('profileSection').style.display = 'none';
+      } else {
+        document.getElementById('dashboardSection').style.display = 'none';
+        document.getElementById('profileSection').style.display = 'block';
+        updateProfileHistory();
+      }
+    }
+
+    loadDash();
+  </script>
+</body>
+</html>

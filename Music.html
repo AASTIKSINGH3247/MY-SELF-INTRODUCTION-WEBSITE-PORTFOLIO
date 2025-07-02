@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎵 Voice Music - Hindi Player</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #121212;
+      color: white;
+    }
+    header {
+      background-color: #1db954;
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .player {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: #1f1f1f;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+    .song-info {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .controls button {
+      background: #1db954;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      color: white;
+      font-size: 1.2rem;
+      border-radius: 50px;
+      cursor: pointer;
+    }
+    .progress-container {
+      background: #333;
+      border-radius: 5px;
+      height: 6px;
+      cursor: pointer;
+      margin-bottom: 1.5rem;
+    }
+    .progress {
+      background: #1db954;
+      height: 100%;
+      width: 0%;
+      border-radius: 5px;
+    }
+    .playlist {
+      list-style: none;
+      padding: 0;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .playlist li {
+      padding: 0.7rem;
+      border-bottom: 1px solid #333;
+      cursor: pointer;
+    }
+    .playlist li.active, .playlist li:hover {
+      background: #2a2a2a;
+    }
+    .upload-section {
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .upload-section input[type="file"] {
+      background: white;
+      color: #333;
+      padding: 0.5rem;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    .upload-section button {
+      margin-top: 10px;
+      padding: 0.5rem 1rem;
+      background: #1db954;
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  🎵 Voice Music - Hindi Songs Player
+</header>
+
+<div class="player">
+  <div class="song-info">
+    <h2 id="title">Select a song</h2>
+    <p id="artist">Artist</p>
+  </div>
+
+  <div class="controls">
+    <button onclick="prevSong()">⏮</button>
+    <button onclick="togglePlay()" id="playBtn">▶️</button>
+    <button onclick="nextSong()">⏭</button>
+  </div>
+
+  <div class="progress-container" onclick="setProgress(event)">
+    <div class="progress" id="progress"></div>
+  </div>
+
+  <ul class="playlist" id="playlist"></ul>
+
+  <div class="upload-section">
+    <h3>Upload & Play Your Own Hindi Song</h3>
+    <input type="file" accept="audio/*" id="fileUpload">
+    <br />
+    <button onclick="uploadAndPlay()">Upload & Play</button>
+  </div>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+  const audio = document.getElementById('audio');
+  const playlist = document.getElementById('playlist');
+  const playBtn = document.getElementById('playBtn');
+  const progress = document.getElementById('progress');
+  const title = document.getElementById('title');
+  const artist = document.getElementById('artist');
+
+  let songs = [
+    { title: "Tum Hi Ho", artist: "Arijit Singh", src: "songs/tum_hi_ho.mp3" },
+    { title: "Channa Mereya", artist: "Arijit Singh", src: "songs/channa_mereya.mp3" },
+    { title: "Raabta", artist: "Arijit Singh", src: "songs/raabta.mp3" },
+    // 🔽 Add more songs here (100 total)...
+    // Example: { title: "Song Name", artist: "Artist Name", src: "songs/song_file.mp3" }
+  ];
+
+  let currentSong = 0;
+
+  function loadPlaylist() {
+    playlist.innerHTML = "";
+    songs.forEach((song, index) => {
+      const li = document.createElement('li');
+      li.textContent = `🎵 ${song.title} - ${song.artist}`;
+      li.onclick = () => loadSong(index);
+      if (index === currentSong) li.classList.add('active');
+      playlist.appendChild(li);
+    });
+  }
+
+  function loadSong(index) {
+    currentSong = index;
+    audio.src = songs[index].src;
+    title.textContent = songs[index].title;
+    artist.textContent = songs[index].artist;
+    document.querySelectorAll('#playlist li').forEach((li, i) => {
+      li.classList.toggle('active', i === index);
+    });
+    playSong();
+  }
+
+  function playSong() {
+    audio.play();
+    playBtn.textContent = '⏸';
+  }
+
+  function pauseSong() {
+    audio.pause();
+    playBtn.textContent = '▶️';
+  }
+
+  function togglePlay() {
+    if (audio.paused) playSong(); else pauseSong();
+  }
+
+  function nextSong() {
+    currentSong = (currentSong + 1) % songs.length;
+    loadSong(currentSong);
+  }
+
+  function prevSong() {
+    currentSong = (currentSong - 1 + songs.length) % songs.length;
+    loadSong(currentSong);
+  }
+
+  function setProgress(e) {
+    const width = e.currentTarget.clientWidth;
+    const clickX = e.offsetX;
+    const duration = audio.duration;
+    audio.currentTime = (clickX / width) * duration;
+  }
+
+  function uploadAndPlay() {
+    const input = document.getElementById('fileUpload');
+    const file = input.files[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    const newSong = { title: file.name, artist: "You", src: url };
+    songs.push(newSong);
+    currentSong = songs.length - 1;
+    loadPlaylist();
+    loadSong(currentSong);
+  }
+
+  audio.addEventListener('timeupdate', () => {
+    const percent = (audio.currentTime / audio.duration) * 100;
+    progress.style.width = percent + '%';
+  });
+
+  loadPlaylist();
+  loadSong(0);
+</script>
+
+</body>
+</html>

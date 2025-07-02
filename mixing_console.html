@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎧 Mixing Console | Audio Studio</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #141e30, #243b55);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: #1c1c1c;
+      padding: 1rem 2rem;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    .container {
+      flex: 1;
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: #2c2f48;
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .section {
+      margin-bottom: 2rem;
+    }
+
+    .section h2 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .slider-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: space-between;
+    }
+
+    .slider-control {
+      flex: 1 1 22%;
+      background: #3b3f5c;
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .slider-control label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: #f1c40f;
+    }
+
+    .slider-control input[type="range"] {
+      width: 100%;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      min-width: 120px;
+    }
+
+    .upload-btn {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .upload-btn:hover {
+      background-color: #2980b9;
+    }
+
+    .play-btn {
+      background-color: #2ecc71;
+      color: white;
+    }
+
+    .play-btn:hover {
+      background-color: #27ae60;
+    }
+
+    .pause-btn {
+      background-color: #e67e22;
+      color: white;
+    }
+
+    .pause-btn:hover {
+      background-color: #d35400;
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 2rem;
+      display: block;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #1c1c1c;
+      color: #ccc;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🎧 Mixing Console</h1>
+  </header>
+
+  <div class="container">
+    <div class="section">
+      <h2>🎵 Load Your Track</h2>
+      <div class="buttons">
+        <input type="file" id="fileInput" accept="audio/*" style="display:none;">
+        <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Upload Audio</button>
+        <button class="play-btn" id="playBtn" disabled>Play</button>
+        <button class="pause-btn" id="pauseBtn" disabled>Pause</button>
+      </div>
+      <audio id="audioPlayer" controls style="display:none;"></audio>
+    </div>
+
+    <div class="section">
+      <h2>🎚 Mixer Controls</h2>
+      <div class="slider-group">
+        <div class="slider-control"><label for="volumeSlider">Volume</label><input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.8"></div>
+        <div class="slider-control"><label for="bassSlider">Bass</label><input type="range" id="bassSlider" min="-10" max="10" step="1" value="0"></div>
+        <div class="slider-control"><label for="trebleSlider">Treble</label><input type="range" id="trebleSlider" min="-10" max="10" step="1" value="0"></div>
+        <div class="slider-control"><label for="balanceSlider">Balance (L-R)</label><input type="range" id="balanceSlider" min="-1" max="1" step="0.1" value="0"></div>
+
+        <div class="slider-control"><label for="voiceSlider">Voices</label><input type="range" id="voiceSlider" min="-10" max="10" value="0"></div>
+        <div class="slider-control"><label for="brassSlider">Brass</label><input type="range" id="brassSlider" min="-10" max="10" value="0"></div>
+        <div class="slider-control"><label for="baseSlider">Base</label><input type="range" id="baseSlider" min="-10" max="10" value="0"></div>
+        <div class="slider-control"><label for="pitchSlider">Pitch</label><input type="range" id="pitchSlider" min="-12" max="12" value="0"></div>
+        <div class="slider-control"><label for="noistikSlider">Noistik</label><input type="range" id="noistikSlider" min="0" max="100" value="50"></div>
+        <div class="slider-control"><label for="freshtaSlider">Freshta</label><input type="range" id="freshtaSlider" min="0" max="100" value="50"></div>
+        <div class="slider-control"><label for="echoSlider">Echo</label><input type="range" id="echoSlider" min="0" max="1" step="0.01" value="0.2"></div>
+        <div class="slider-control"><label for="reverbSlider">Reverb</label><input type="range" id="reverbSlider" min="0" max="1" step="0.01" value="0.3"></div>
+        <div class="slider-control"><label for="speedSlider">Speed</label><input type="range" id="speedSlider" min="0.5" max="2" step="0.1" value="1"></div>
+        <div class="slider-control"><label for="distortionSlider">Distortion</label><input type="range" id="distortionSlider" min="0" max="100" value="0"></div>
+        <div class="slider-control"><label for="flangerSlider">Flanger</label><input type="range" id="flangerSlider" min="0" max="100" value="0"></div>
+        <div class="slider-control"><label for="phaserSlider">Phaser</label><input type="range" id="phaserSlider" min="0" max="100" value="0"></div>
+        <div class="slider-control"><label for="vibratoSlider">Vibrato</label><input type="range" id="vibratoSlider" min="0" max="100" value="0"></div>
+        <div class="slider-control"><label for="stereoSlider">Stereo Width</label><input type="range" id="stereoSlider" min="0" max="100" value="50"></div>
+        <div class="slider-control"><label for="harmonicSlider">Harmonics</label><input type="range" id="harmonicSlider" min="0" max="100" value="0"></div>
+        <div class="slider-control"><label for="ambientSlider">Ambient</label><input type="range" id="ambientSlider" min="0" max="100" value="50"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const audioPlayer = document.getElementById('audioPlayer');
+    const playBtn = document.getElementById('playBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const fileInput = document.getElementById('fileInput');
+
+    const volumeSlider = document.getElementById('volumeSlider');
+    const speedSlider = document.getElementById('speedSlider');
+
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      if (file) {
+        const url = URL.createObjectURL(file);
+        audioPlayer.src = url;
+        audioPlayer.style.display = 'block';
+        playBtn.disabled = false;
+        pauseBtn.disabled = false;
+      }
+    });
+
+    playBtn.addEventListener('click', () => {
+      audioPlayer.play();
+    });
+
+    pauseBtn.addEventListener('click', () => {
+      audioPlayer.pause();
+    });
+
+    volumeSlider.addEventListener('input', () => {
+      audioPlayer.volume = volumeSlider.value;
+    });
+
+    speedSlider.addEventListener('input', (e) => {
+      audioPlayer.playbackRate = e.target.value;
+    });
+
+    // Log other sliders (ready to connect to Web Audio API)
+    const sliders = [
+      'bassSlider', 'trebleSlider', 'balanceSlider', 'voiceSlider', 'brassSlider', 'baseSlider',
+      'pitchSlider', 'noistikSlider', 'freshtaSlider', 'echoSlider', 'reverbSlider',
+      'distortionSlider', 'flangerSlider', 'phaserSlider', 'vibratoSlider',
+      'stereoSlider', 'harmonicSlider', 'ambientSlider'
+    ];
+
+    sliders.forEach(id => {
+      const slider = document.getElementById(id);
+      slider.addEventListener('input', () => {
+        console.log(`${id}:`, slider.value);
+      });
+    });
+  </script>
+
+</body>
+</html>
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Web Audio Studio</title>
+  <style>
+    body, html { margin:0; padding:0; height:100%; font-family:sans-serif; }
+    #container { display:flex; height:100vh; }
+    #sidebar { width:300px; background:#2c2f48; color:#fff; display:flex; flex-direction:column; }
+    #sidebar input { margin:10px; padding:8px; border-radius:4px; border:none; }
+    #sidebar button { margin:0 10px 10px; padding:10px; border:none; border-radius:4px; background:#3498db; color:#fff; }
+    #searchResults { flex:1; overflow:auto; padding:10px; }
+    .result { padding:8px; background:#3b3f5c; margin-bottom:5px; cursor:pointer; }
+    #editor { flex:1; background:#141e30; color:#fff; padding:10px; display:flex; flex-direction:column; }
+    #tracks { flex:1; overflow:auto; border:1px solid #444; margin-bottom:10px; position:relative; }
+    .track { background:#2c2f48; margin:8px 0; padding:10px; position:relative; }
+    #controls { display:flex; gap:10px; align-items:center; }
+    #mixer { display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+    .slider-group { display:flex; flex-wrap:wrap; gap:10px; }
+    .slider-control { background:#3b3f5c; padding:8px; border-radius:4px; display:flex; flex-direction:column; align-items:center; }
+    .slider-control label { font-size:12px; margin-bottom:4px; }
+    audio { display:none; }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="sidebar">
+      <input type="text" id="searchInput" placeholder="Search tracks/samples..." />
+      <button id="searchBtn">Search</button>
+      <div id="searchResults"></div>
+    </div>
+    <div id="editor">
+      <div id="controls">
+        <button id="playBtn" disabled>Play All</button>
+        <button id="pauseBtn" disabled>Pause</button>
+        <button id="addGenBtn">Generate Track</button>
+      </div>
+      <div id="tracks"></div>
+      <div id="mixer">
+        <!-- Reuse your 20+ slider controls here -->
+        <div class="slider-group" id="slidersContainer">
+          <!-- We'll inject sliders via JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  // --- Basic Query + Track Loader ---
+  const searchInput = document.getElementById('searchInput');
+  const searchBtn = document.getElementById('searchBtn');
+  const searchResults = document.getElementById('searchResults');
+  const tracksDiv = document.getElementById('tracks');
+  const playBtn = document.getElementById('playBtn');
+  const pauseBtn = document.getElementById('pauseBtn');
+  const addGenBtn = document.getElementById('addGenBtn');
+  const slidersContainer = document.getElementById('slidersContainer');
+
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  const audioCtx = new AudioContext();
+  let masterGain = audioCtx.createGain();
+  masterGain.connect(audioCtx.destination);
+
+  let tracks = [];
+  let isPlaying = false;
+
+  // Generate placeholder sliders
+  const sliderDefs = [
+    { id: 'volume', min:0, max:1, step:0.01, val:0.8 },
+    { id: 'bass', min:-10, max:10, step:1, val:0 },
+    { id: 'treble', min:-10, max:10, step:1, val:0 },
+    // ... add the rest of your 20+ definitions
+    { id: 'pitch', min:-12, max:12, step:1, val:0 },
+    { id: 'echo', min:0, max:1, step:0.01, val:0.2 },
+    { id: 'reverb', min:0, max:1, step:0.01, val:0.3 }
+  ];
+  sliderDefs.forEach(def => {
+    const el = document.createElement('div');
+    el.classList.add('slider-control');
+    el.innerHTML = `<label>${def.id}</label><input type="range" id="${def.id}" min="${def.min}" max="${def.max}" step="${def.step}" value="${def.val}">`;
+    slidersContainer.appendChild(el);
+    const inp = el.querySelector('input');
+    inp.addEventListener('input', () => {
+      console.log(def.id, inp.value);
+    });
+  });
+
+  // Simulated Search
+  searchBtn.addEventListener('click', () => {
+    const query = searchInput.value.trim();
+    searchResults.innerHTML = '';
+    if (!query) return;
+    for (let i=1;i<=5;i++){
+      const div = document.createElement('div');
+      div.className='result';
+      div.textContent = `Sample ${i} for "${query}"`;
+      div.addEventListener('click', () => addTrack(div.textContent));
+      searchResults.appendChild(div);
+    }
+  });
+
+  function addTrack(label){
+    const trackDiv = document.createElement('div');
+    trackDiv.className='track';
+    trackDiv.textContent = label;
+    const bufferSource = audioCtx.createBufferSource();
+    // Placeholder silent audio
+    const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate*1, audioCtx.sampleRate);
+    bufferSource.buffer = buffer;
+    bufferSource.loop = false;
+    bufferSource.connect(masterGain);
+    trackDiv.track = bufferSource;
+    tracksDiv.appendChild(trackDiv);
+    tracks.push(bufferSource);
+    playBtn.disabled = false;
+    pauseBtn.disabled = false;
+  }
+
+  playBtn.addEventListener('click', () => {
+    if (isPlaying) return;
+    tracks.forEach(ts => ts.start(0));
+    isPlaying = true;
+  });
+  pauseBtn.addEventListener('click', () => {
+    if (!isPlaying) return;
+    console.warn('Pause not supported on BufferSource; reload required');
+    isPlaying = false;
+  });
+
+  addGenBtn.addEventListener('click', () => {
+    alert('Audio generation placeholder — hook your AI here!');
+  });
+  </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>🎧 Music/Voice Editor</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #ece9e6, #ffffff);
+      color: #333;
+      margin: 0;
+      padding: 40px 20px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #2c3e50;
+    }
+
+    #editor-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+    }
+
+    input[type="file"] {
+      display: block;
+      margin: 0 auto 20px auto;
+    }
+
+    #waveform {
+      margin: 20px 0;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #f0f0f0;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 10px 0;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    label {
+      font-weight: bold;
+      margin-right: 6px;
+    }
+
+    input[type="range"] {
+      width: 150px;
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .slider-label {
+      min-width: 60px;
+      display: inline-block;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .controls {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+
+  <!-- Wavesurfer JS -->
+  <script src="https://unpkg.com/wavesurfer.js"></script>
+  <script src="https://unpkg.com/wavesurfer.js/dist/plugin/regions.min.js"></script>
+  <script src="https://unpkg.com/wavesurfer.js/dist/plugin/timeline.min.js"></script>
+</head>
+<body>
+
+<div id="editor-container">
+  <h2>🎧 Music/Voice Editor</h2>
+
+  <input type="file" id="fileUpload" accept="audio/*" />
+
+  <div id="waveform"></div>
+
+  <div class="controls">
+    <div class="control-group">
+      <button onclick="wavesurfer.playPause()">▶️ Play/Pause</button>
+      <button onclick="trimAudio()">✂️ Trim</button>
+      <button onclick="downloadRegion()">💾 Download Trim</button>
+    </div>
+
+    <div class="control-group">
+      <label for="speedRange">Speed:</label>
+      <input type="range" id="speedRange" min="0.5" max="2" step="0.1" value="1" />
+      <span class="slider-label" id="speedVal">1.0x</span>
+    </div>
+
+    <div class="control-group">
+      <label for="volumeRange">Volume:</label>
+      <input type="range" id="volumeRange" min="0" max="1" step="0.05" value="1" />
+    </div>
+
+    <div class="control-group">
+      <label for="pitchRange">Pitch:</label>
+      <input type="range" id="pitchRange" min="0.5" max="2" step="0.1" value="1" />
+      <span class="slider-label" id="pitchVal">1.0x</span>
+    </div>
+  </div>
+</div>
+
+  <footer>
+    &copy; 2025 Audio Studio | Mixing Console by VoiceChanger Pro
+  </footer>
+
+
+<script>
+  let wavesurfer = WaveSurfer.create({
+    container: '#waveform',
+    waveColor: '#6c8ae4',
+    progressColor: '#405ad2',
+    height: 120,
+    plugins: [ WaveSurfer.regions.create(), WaveSurfer.timeline.create({ container: "#timeline" }) ]
+  });
+
+  document.getElementById('fileUpload').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      wavesurfer.load(url);
+    }
+  });
+
+  const speedRange = document.getElementById('speedRange');
+  speedRange.oninput = () => {
+    wavesurfer.setPlaybackRate(speedRange.value);
+    document.getElementById('speedVal').textContent = speedRange.value + "x";
+  };
+
+  const volumeRange = document.getElementById('volumeRange');
+  volumeRange.oninput = () => {
+    wavesurfer.setVolume(volumeRange.value);
+  };
+
+  const pitchRange = document.getElementById('pitchRange');
+  pitchRange.oninput = () => {
+    wavesurfer.setPlaybackRate(pitchRange.value); // Simplified pitch approximation
+    document.getElementById('pitchVal').textContent = pitchRange.value + "x";
+  };
+
+  wavesurfer.on('ready', () => {
+    wavesurfer.clearRegions();
+    wavesurfer.addRegion({
+      start: 0,
+      end: wavesurfer.getDuration() / 2,
+      color: 'rgba(0, 123, 255, 0.2)'
+    });
+  });
+
+  function trimAudio() {
+    const region = Object.values(wavesurfer.regions.list)[0];
+    if (region) {
+      wavesurfer.play(region.start, region.end);
+    } else {
+      alert("Select a region to trim.");
+    }
+  }
+
+  function downloadRegion() {
+    const region = Object.values(wavesurfer.regions.list)[0];
+    if (!region) return alert("No region selected!");
+
+    const src = wavesurfer.backend.buffer;
+    const start = region.start;
+    const end = region.end;
+
+    const trimmed = src.slice(start * src.sampleRate, end * src.sampleRate);
+    const offlineCtx = new OfflineAudioContext(1, trimmed.length, src.sampleRate);
+    const buffer = offlineCtx.createBuffer(1, trimmed.length, src.sampleRate);
+    buffer.copyToChannel(trimmed.getChannelData(0), 0);
+
+    const source = offlineCtx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(offlineCtx.destination);
+    source.start();
+
+    offlineCtx.startRendering().then(renderedBuffer => {
+      const blob = bufferToWave(renderedBuffer, renderedBuffer.length);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'trimmed.wav';
+      a.click();
+    });
+  }
+
+  function bufferToWave(abuffer, len) {
+    const numOfChan = abuffer.numberOfChannels,
+      length = len * numOfChan * 2 + 44,
+      buffer = new ArrayBuffer(length),
+      view = new DataView(buffer),
+      channels = [],
+      i,
+      sample,
+      offset = 0,
+      pos = 0;
+
+    setUint32(0x46464952); // "RIFF"
+    setUint32(length - 8);
+    setUint32(0x45564157); // "WAVE"
+
+    setUint32(0x20746d66); // "fmt "
+    setUint32(16);
+    setUint16(1);
+    setUint16(numOfChan);
+    setUint32(abuffer.sampleRate);
+    setUint32(abuffer.sampleRate * 2 * numOfChan);
+    setUint16(numOfChan * 2);
+    setUint16(16);
+
+    setUint32(0x61746164); // "data"
+    setUint32(length - pos - 4);
+
+    for (i = 0; i < abuffer.numberOfChannels; i++)
+      channels.push(abuffer.getChannelData(i));
+
+    while (pos < length) {
+      for (i = 0; i < numOfChan; i++) {
+        sample = Math.max(-1, Math.min(1, channels[i][offset]));
+        sample = sample < 0 ? sample * 0x8000 : sample * 0x7FFF;
+        view.setInt16(pos, sample, true);
+        pos += 2;
+      }
+      offset++;
+    }
+
+    function setUint16(data) {
+      view.setUint16(pos, data, true);
+      pos += 2;
+    }
+
+    function setUint32(data) {
+      view.setUint32(pos, data, true);
+      pos += 4;
+    }
+
+    return new Blob([buffer], { type: "audio/wav" });
+  }
+</script>
+
+</body>
+</html>

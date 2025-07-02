@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register - VoiceChanger Pro</title>
+  <script src="main.js" defer></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    body {
+      background: linear-gradient(-45deg, #007bff, #6f42c1, #6610f2, #20c997);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Fullscreen Background Image from Local AVIF File */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('girl-wearing-jumpsuit-background-is-wall-rainbowish-binary-codes_683493-46.avif') center center / cover no-repeat;
+      opacity: 0.3;
+      z-index: 0;
+      animation: zoomInOut 20s ease-in-out infinite;
+      filter: grayscale(0.1) brightness(1.1) contrast(1.1);
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes zoomInOut {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .main-wrapper {
+      display: flex;
+      width: 100%;
+      max-width: 1000px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      animation: fadeIn 1.5s ease;
+      z-index: 1;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .container {
+      flex: 1;
+      padding: 2rem 3rem;
+    }
+
+    .container h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 1.2rem;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="tel"],
+    input[type="date"] {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    label {
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      display: block;
+      color: #333;
+    }
+
+    .checkbox {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .checkbox input {
+      width: 20px;
+      height: 20px;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 1.5rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    p {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .ads {
+      width: 300px;
+      background: #f8f9fa;
+      padding: 1rem;
+      border-left: 2px solid #007bff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      animation: slideIn 1.2s ease;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .ads h3 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    .ad-item {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .ad-item.active {
+      display: flex;
+      animation: fadeIn 1s ease;
+    }
+
+    .ad-item img {
+      width: 100%;
+      max-height: 160px;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+
+    .ad-item p {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    @media (max-width: 768px) {
+      .main-wrapper {
+        flex-direction: column;
+        max-width: 95%;
+      }
+
+      .ads {
+        width: 100%;
+        border-left: none;
+        border-top: 2px solid #007bff;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-wrapper">
+    <!-- Register Form -->
+    <div class="container">
+      <h2>🔐 Register</h2>
+
+      <label for="username">Username</label>
+      <input id="username" type="text" placeholder="Your username" />
+
+      <label for="contact">Email or Phone</label>
+      <input id="contact" type="text" placeholder="example@mail.com or +1234567890" />
+
+      <label for="dob">Date of Birth</label>
+      <input id="dob" type="date" />
+
+      <label for="place">Place</label>
+      <input id="place" type="text" placeholder="City / Location" />
+
+      <label for="password">Password</label>
+      <input id="password" type="password" placeholder="Enter password" />
+
+      <div class="checkbox">
+        <input type="checkbox" id="captcha" />
+        <label for="captcha">I am not a robot</label>
+      </div>
+
+      <button onclick="register()">Register</button>
+      <p>or <a href="index.html">Login</a></p>
+    </div>
+
+    <!-- Animated Ads Section -->
+    <div class="ads">
+      <h3>🎬 Now Playing</h3>
+      <div class="ad-item active">
+        <img src="https://via.placeholder.com/280x160.png?text=Voice+Booster+Pro" alt="Ad 1">
+        <p>Try our new VoiceBooster AI for crystal-clear sound!</p>
+      </div>
+      <div class="ad-item">
+        <img src="https://via.placeholder.com/280x160.png?text=Streamer+Kit" alt="Ad 2">
+        <p>Level up your stream with our Streamer FX Pack 🔥</p>
+      </div>
+      <div class="ad-item">
+        <img src="https://via.placeholder.com/280x160.png?text=Celebrity+Voices" alt="Ad 3">
+        <p>New Celebrity Voice Pack just dropped! 🎤</p>
+      </div>
+    </div>
+  </div>
+  
+
+  <script>
+    async function register() {
+      const username = document.getElementById('username').value.trim();
+      const contact = document.getElementById('contact').value.trim();
+      const dob = document.getElementById('dob').value;
+      const place = document.getElementById('place').value.trim();
+      const password = document.getElementById('password').value;
+      const captcha = document.getElementById('captcha').checked;
+
+      if (!username || !contact || !dob || !place || !password || !captcha) {
+        alert('Please fill in all fields and confirm you are not a robot.');
+        return;
+      }
+
+      const r = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, contact, dob, place, password })
+      }).then(r => r.json());
+
+      if (r.success) {
+        window.location = 'index.html';
+      } else {
+        alert(r.error || 'Registration failed.');
+      }
+    }
+
+    // Ad Carousel
+    let currentAd = 0;
+    const ads = document.querySelectorAll('.ad-item');
+    setInterval(() => {
+      ads[currentAd].classList.remove('active');
+      currentAd = (currentAd + 1) % ads.length;
+      ads[currentAd].classList.add('active');
+    }, 5000);
+  </script>
+</body>
+</html>

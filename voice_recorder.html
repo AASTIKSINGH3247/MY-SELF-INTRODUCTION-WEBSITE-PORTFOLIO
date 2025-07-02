@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎤 Voice Recorder | VoiceChanger Pro</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #4e54c8, #8f94fb);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: #343a40;
+      padding: 1rem 2rem;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.2rem;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 700px;
+      background-color: #1e1f2f;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .status {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      color: #ccc;
+    }
+
+    .timer {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #f1c40f;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      min-width: 120px;
+    }
+
+    .start-btn {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .start-btn:hover {
+      background-color: #218838;
+    }
+
+    .stop-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .stop-btn:hover {
+      background-color: #c82333;
+    }
+
+    .play-btn {
+      background-color: #17a2b8;
+      color: white;
+    }
+
+    .play-btn:hover {
+      background-color: #138496;
+    }
+
+    .download-btn {
+      background-color: #ffc107;
+      color: #212529;
+    }
+
+    .download-btn:hover {
+      background-color: #e0a800;
+    }
+
+    audio {
+      width: 100%;
+      display: none;
+      margin-top: 1.5rem;
+    }
+
+    footer {
+      text-align: center;
+      color: #ccc;
+      padding: 1rem;
+      background-color: #2d2f45;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🎤 Voice Recorder</h1>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <p>Record your voice, listen, and download it instantly!</p>
+
+      <div class="status" id="statusMsg">Idle</div>
+      <div class="timer" id="timer">00:00</div>
+
+      <div class="buttons">
+        <button class="start-btn" id="startRecord">Start</button>
+        <button class="stop-btn" id="stopRecord" disabled>Stop</button>
+        <button class="play-btn" id="playAudio" disabled>Play</button>
+        <button class="download-btn" id="downloadAudio" disabled>Download</button>
+      </div>
+
+      <audio id="audioPlayer" controls></audio>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 VoiceChanger Pro | All rights reserved.
+  </footer>
+
+  <script>
+    let mediaRecorder;
+    let audioChunks = [];
+    let timerInterval;
+    let seconds = 0;
+    const startBtn = document.getElementById('startRecord');
+    const stopBtn = document.getElementById('stopRecord');
+    const playBtn = document.getElementById('playAudio');
+    const downloadBtn = document.getElementById('downloadAudio');
+    const audioPlayer = document.getElementById('audioPlayer');
+    const statusMsg = document.getElementById('statusMsg');
+    const timerEl = document.getElementById('timer');
+    let audioBlob;
+
+    function formatTime(sec) {
+      const m = String(Math.floor(sec / 60)).padStart(2, '0');
+      const s = String(sec % 60).padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function startTimer() {
+      seconds = 0;
+      timerEl.textContent = formatTime(seconds);
+      timerInterval = setInterval(() => {
+        seconds++;
+        timerEl.textContent = formatTime(seconds);
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+    }
+
+    startBtn.addEventListener('click', async () => {
+      audioChunks = [];
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+
+        mediaRecorder.ondataavailable = event => {
+          if (event.data.size > 0) {
+            audioChunks.push(event.data);
+          }
+        };
+
+        mediaRecorder.onstop = () => {
+          audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+          const audioUrl = URL.createObjectURL(audioBlob);
+          audioPlayer.src = audioUrl;
+          audioPlayer.style.display = 'block';
+          playBtn.disabled = false;
+          downloadBtn.disabled = false;
+          statusMsg.textContent = "Recording stopped";
+        };
+
+        mediaRecorder.start();
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        playBtn.disabled = true;
+        downloadBtn.disabled = true;
+        statusMsg.textContent = "🎙️ Recording...";
+        startTimer();
+      } catch (error) {
+        alert('Microphone access denied or not supported.');
+        statusMsg.textContent = "❌ Microphone access error.";
+      }
+    });
+
+    stopBtn.addEventListener('click', () => {
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+        stopBtn.disabled = true;
+        startBtn.disabled = false;
+        stopTimer();
+      }
+    });
+
+    playBtn.addEventListener('click', () => {
+      if (audioPlayer.src) {
+        audioPlayer.play();
+      }
+    });
+
+    downloadBtn.addEventListener('click', () => {
+      if (audioBlob) {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(audioBlob);
+        a.download = 'recording.webm';
+        a.click();
+      }
+    });
+  </script>
+
+</body>
+</html>
