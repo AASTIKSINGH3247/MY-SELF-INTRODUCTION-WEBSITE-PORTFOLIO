@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAURAV RAJ OFFICIAL</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Times New Roman', serif;
+            background: linear-gradient(to bottom right, #6a0dad, #b19cd9);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 20px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        nav ul li {
+            margin: 5px 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .intro {
+            padding: 40px 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .intro h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .intro p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            max-width: 1000px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .intro img {
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+
+        button {
+            margin: 10px;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            background-color: white;
+            color: #6a0dad;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #ddd;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 40px auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .contact-form button {
+            width: 100%;
+            background: white;
+            color: #6a0dad;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        @media screen and (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .intro h2 {
+                font-size: 1.8em;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .intro img {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Welcome to My Portfolio</h1>
+            <nav>
+                <ul>
+                    <li><a href="about.html">About Me</a></li>
+                    <li><a href="certificates.html">Certificates</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="social.html">Social Links</a></li>
+                    <li><a href="resume.html">Resume</a></li>
+                    <li><a href="my document.html">My Document</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section class="intro">
+                <h2>Hello, I'm SAURAV RAJ</h2>
+                <p>
+                    🚀 Software Engineer | Full-Stack Developer | Tech Influencer (140K+ Followers) | Web & App Creator | Cybersecurity Enthusiast | Entrepreneur<br><br>
+                    I am a passionate and results-driven software engineer with a strong foundation in computer science, full-stack development, problem solving, and innovation. With over 1,000+ LeetCode problems solved in Python, Java, and C++, and 500+ more solved on platforms like Upstox and HackerRank, I’ve built deep expertise in algorithms, data structures, and scalable systems.<br><br>
+                    Recognized with 5-star Gold Certifications in Java, Python, C, and C++ on HackerRank.<br><br>
+                    Over the years, I’ve worked with a broad range of technologies to build web platforms, mobile apps, automation tools, and business solutions. I’m also an ethical hacker and Linux/Termux power user, exploring the intersection between cybersecurity and software development.<br><br>
+                    In parallel, I’ve grown into a recognized content creator and influencer with a 140K+ community on Instagram, where I share tech tutorials, coding tips, productivity hacks, and career advice. My mission is to inspire, educate, and empower the next generation of tech talent.<br><br>
+                    💻 Tech Stack:<br>
+                    Python, Java, C++, C, JavaScript, TypeScript, PHP, React.js, Node.js, Express.js, Flask, MongoDB, SQL, Firebase, Android, Git, APIs, Figma and more.<br><br>
+                    🎯 Highlights:<br>
+                    • Built full-stack web and mobile apps<br>
+                    • Solved over 1,500+ coding problems<br>
+                    • Cybersecurity knowledge and ethical hacking<br>
+                    • Real estate + tech synergy for business growth<br>
+                    • 140K+ tech followers on Instagram<br><br>
+                    📩 Contact: sk6162906@gmail.com
+                </p>
+                <img src="my-photo.png" alt="Saurav Raj Photo">
+                <br>
+                <button onclick="location.href='index.html'">Back Home</button>
+                <button onclick="document.getElementById('contact').scrollIntoView()">Feedback / Message Me</button>
+            </section>
+
+            <section id="contact" class="contact-form">
+                <h3>Send Me a Message</h3>
+                <form action="https://formsubmit.co/sk6162906@gmail.com" method="POST" enctype="multipart/form-data">
+                    <input type="email" name="email" placeholder="Your Email" required>
+                    <input type="text" name="subject" placeholder="Subject" required>
+                    <textarea name="message" rows="5" placeholder="Write your message here..." required></textarea>
+                    <input type="file" name="attachment">
+                    <button type="submit">Send to My Gmail</button>
+                </form>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 SAURAV RAJ. All Rights Reserved.</p>
+        </footer>
+    </div>
+</body>
+
+</html>

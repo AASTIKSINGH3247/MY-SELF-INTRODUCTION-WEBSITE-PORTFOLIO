@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Certificates - Saurav Raj</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6a0dad, #b19cd9);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h2 {
+            text-align: center;
+            padding: 20px;
+            font-size: 2.5rem;
+        }
+
+        .certificates-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .certificate-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            padding: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .certificate-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+        }
+
+        .certificate-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .certificate-description {
+            margin: 10px 0;
+            font-size: 0.95rem;
+            color: #f0f0f0;
+            white-space: pre-wrap;
+        }
+
+        .certificate-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background: #fff;
+            color: #6a0dad;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .certificate-link:hover {
+            background: #e0d7f8;
+        }
+
+        .sparkles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkleMove 10s linear infinite;
+        }
+
+        @keyframes sparkleMove {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h2>My Certificates</h2>
+    <div class="certificates-gallery" id="certificatesGallery"></div>
+    <div class="sparkles"></div>
+
+    <script>
+        // Sparkle background
+        const sparkleCount = 100;
+        const sparkleContainer = document.querySelector('.sparkles');
+
+        for (let i = 0; i < sparkleCount; i++) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = Math.random() * 100 + 'vw';
+            sparkle.style.top = Math.random() * 100 + 'vh';
+            sparkle.style.animationDuration = (5 + Math.random() * 5) + 's';
+            sparkleContainer.appendChild(sparkle);
+        }
+
+        // Certificates array
+        const certificates = [
+            {
+                image: 'Coursera IJ5WXHWXBXYV_page-0001.jpg',
+                description: `Completed by Saurav Raj
+May 31, 2025
+3 hours (approximately)
+Grade Achieved: 100%
+Saurav Raj's account is verified. Coursera certifies their successful completion of Power BI Data Analyst Prep.`,
+                link: 'https://coursera.org/share/3e775d4a8021d32264261554df82afc3'
+            },
+            {
+                image: 'Coursera 37NFQ11MO4ZL_page-0001.jpg',
+                description: `Completed by Saurav Raj
+June 1, 2025
+21 hours (approximately)
+Grade Achieved: 100%
+Saurav Raj's account is verified. Coursera certifies their successful completion of AWS Cloud Technical Essentials.`,
+                link: 'https://coursera.org/share/535dc19ae31f9e2d485fd1a55be404c2'
+            },
+            {
+                image: 'Coursera 4X8LIVW68JGT (1)_page-0001.jpg',
+                description: `Completed by Saurav Raj
+May 31, 2025
+8 hours (approximately)
+Grade Achieved: 92%
+Saurav Raj's account is verified. Coursera certifies their successful completion of International Cyber Conflicts.`,
+                link: 'https://coursera.org/share/0cc25f03e1e9b5cb6f3d12018619aa74'
+            },
+            {
+                image: 'Coursera LZVLNCTJKT8M (1)_page-0001.jpg',
+                description: `Completed by Saurav Raj
+May 31, 2025
+20 hours (approximately)
+Grade Achieved: 91.25%
+Saurav Raj's account is verified. Coursera certifies their successful completion of Introduction to Git and GitHub.`,
+                link: 'https://coursera.org/share/d2c86e67961ff9155403cbd78f8ee6ae'
+            },
+            {
+                image: 'Coursera XEEPTOXNFGVP (1)_page-0001.jpg',
+                description: `Completed by Saurav Raj
+May 31, 2025
+12 hours (approximately)
+Grade Achieved: 96.30%
+Saurav Raj's account is verified. Coursera certifies their successful completion of Foundations of Project Management.`,
+                link: 'https://coursera.org/share/f06394a89ca08bcb281097d611e0f91b'
+            },
+            {
+                image: 'Coursera QZAQRJ8KAP16 (1)_page-0001.jpg',
+                description: `Completed by Saurav Raj
+May 29, 2025
+2 hours (approximately)
+Grade Achieved: 90%
+Saurav Raj's account is verified. Coursera certifies their successful completion of Advanced Microsoft Power BI.`,
+                link: 'https://coursera.org/share/074db166f4cc6bfa31714150f396676f'
+            },
+            {
+                image: 'Coursera Y0Q3GWELUV6X (1)_page-0001.jpg',
+                description: `Completed by Saurav Raj
+June 1, 2025
+24 hours (approximately)
+Grade Achieved: 93%
+Saurav Raj's account is verified. Coursera certifies their successful completion of Project Planning: Putting It All Together.`,
+                link: 'https://coursera.org/share/44f4842f1abdf3a9e7e8726b2321203e'
+            },
+            {
+                image: 'Coursera KPHPMEVYAHW0 (1)_page-0001.jpg',
+                description: `Completed by Saurav Raj
+May 31, 2025
+8 hours (approximately)
+Grade Achieved: 92.50%
+Saurav Raj's account is verified. Coursera certifies their successful completion of Automation in the AWS Cloud.`,
+                link: 'https://coursera.org/share/0b49809aeda93121d223fa096237ced6'
+            },
+            {
+                image: 'Coursera 5UZ91GQX4J5N (1)_page-0001.jpg',
+                description: `Completed by Saurav Raj
+May 31, 2025
+1 hour (approximately)
+Grade Achieved: 100%
+Saurav Raj's account is verified. Coursera certifies their successful completion of Copilot for Power BI.`,
+                link: 'https://coursera.org/share/eb7057945bb7ad536a299a9822825eb6'
+            },
+            {
+                image: 'Coursera 5UZ91GQX4J5N (1)_page-0001.jpg',
+                description: `Completed by Saurav Raj
+May 30, 2025
+15 hours (approximately)
+Grade Achieved: 94%
+Saurav Raj's account is verified. Coursera certifies their successful completion of Data Analysis with Python.`,
+                link: 'https://coursera.org/share/eb7057945bb7ad536a299a9822825eb6'
+            },
+             {
+                image: 'Coursera S0GK0UFDJUZT (1)_page-0001.jpg',
+                description: `Completed by Saurav Raj
+May 31, 2025
+17 hours (approximately)
+Grade Achieved: 97.76%
+Saurav Raj's account is verified. Coursera certifies their successful completion of Project Initiation: Starting a Successful Project`,
+                link: 'https://coursera.org/share/987b1b5931c00ae651b8a1f88f3b589a'
+            },
+             {
+                image: 'Coursera 6195421IU5AB (1)_page-0001.jpg',
+                description: `Completed by Saurav Raj
+May 29, 2025
+10 hours (approximately)
+Grade Achieved: 91.97%
+Saurav Raj's account is verified. Coursera certifies their successful completion of Project Management Essentials`,
+                link: 'https://coursera.org/share/9c3cb76a00c12b2b56f5e21dffb5f857'
+            },
+             {
+                image: 'Coursera F2YOXDJH69I6 (1)_page-0001.jpg',
+                description: `Completed by Saurav Raj
+May 21, 2025
+14 hours (approximately)
+Grade Achieved: 95.50%
+Saurav Raj's account is verified. Coursera certifies their successful completion of Introduction to Software Engineering`,
+                link: 'https://coursera.org/share/6e44fc758c9e4a290ef9a9ecb98bf672'
+            },
+             {
+                image: 'Coursera GULXWSE7MUB7 (1)_page-0001.jpg',
+                description: `Completed by Saurav Raj
+May 29, 2025
+3 hours (approximately)
+Grade Achieved: 100%
+Saurav Raj's account is verified. Coursera certifies their successful completion of Google Cloud VMware Engine`,
+                link: 'https://coursera.org/share/dfd2ccca8f16e75fedc7b1437c1ba5bc'
+            },
+             {
+                image: 'Coursera QGCGP4SIXTW3 (1)_page-0001.jpg',
+                description: `Completed by Saurav Raj
+May 20, 2025
+1 hours (approximately)
+Grade Achieved: 100%
+Saurav Raj's account is verified. Coursera certifies their successful completion of Introduction to Generative AI`,
+                link: 'https://coursera.org/share/26bbef55d9dc3eefcac3aa1fad457acb'
+            },
+             {
+                image: 'Coursera W52P4E8GRS0T (1)_page-0001.jpg',
+                description: `Completed by Saurav Raj
+May 20, 2025
+1 hours (approximately)
+Grade Achieved: 100%
+Saurav Raj's account is verified. Coursera certifies their successful completion of GenAI for Back-End Web Developers`,
+                link: 'https://coursera.org/share/60cfa650c16a9e4a1da97f53a1855a78'
+            },
+             {
+                image: 'Coursera K1ELTT59WATW (1)_page-0001.jpg',
+                description: `Completed by Saurav Raj
+May 28, 2025
+1 hours (approximately)
+Grade Achieved: 100%
+Saurav Raj's account is verified. Coursera certifies their successful completion of Introduction to Networking`,
+                link: 'https://coursera.org/share/06b03a70e07fdd68dd0d6459fe2a2b58'
+            },
+             {
+                image: '',
+                description: ``,
+                link: ''
+            },
+            {
+                image: '',
+                description: ``,
+                link: ''
+            },
+            {
+                image: '',
+                description: ``,
+                link: ''
+            },
+            {
+                image: '',
+                description: ``,
+                link: ''
+            },
+            {
+                image: '',
+                description: ``,
+                link: ''
+            },
+            {
+                image: '',
+                description: ``,
+                link: ''
+            },
+            {
+                image: '',
+                description: ``,
+                link: ''
+            },
+            {
+                image: '',
+                description: ``,
+                link: ''
+            },
+            {
+                image: '',
+                description: ``,
+                link: ''
+            },
+            {
+                image: '',
+                description: ``,
+                link: ''
+            },
+            {
+                image: '',
+                description: ``,
+                link: ''
+            },
+            {
+                image: '',
+                description: ``,
+                link: ''
+            },
+            {
+                image: '',
+                description: ``,
+                link: ''
+            },
+            {
+                image: '',
+                description: ``,
+                link: ''
+            },
+        ];
+
+        const gallery = document.getElementById('certificatesGallery');
+
+        certificates.forEach((cert, index) => {
+            const item = document.createElement('div');
+            item.className = 'certificate-item';
+            item.innerHTML = `
+                <img src="${cert.image}" alt="Certificate ${index + 1}">
+                <p class="certificate-description">${cert.description}</p>
+                <a href="${cert.link}" class="certificate-link" target="_blank">View Certificate</a>
+            `;
+            gallery.appendChild(item);
+        });
+    </script>
+</body>
+
+</html>

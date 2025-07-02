@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>My Projects</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f4f8;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        h2 {
+            text-align: center;
+            color: #6a0dad;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .projects-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .project-item {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            animation: popIn 0.7s ease-in-out;
+        }
+
+        .project-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .project-item h3 {
+            color: #6a0dad;
+            font-size: 1.4rem;
+            margin: 15px 0 10px;
+        }
+
+        .project-description {
+            padding: 0 15px;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+
+        .screenshot-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px;
+        }
+
+        .screenshot-gallery img {
+            width: 30%;
+            border-radius: 5px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .screenshot-gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        .project-links {
+            padding: 10px 15px 20px;
+            text-align: center;
+        }
+
+        .project-links a {
+            display: inline-block;
+            margin: 6px 10px;
+            padding: 8px 15px;
+            background: #6a0dad;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .project-links a:hover {
+            background: #4b0082;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% { opacity: 0 }
+            100% { opacity: 1 }
+        }
+
+        @keyframes slideDown {
+            0% { transform: translateY(-20px); opacity: 0 }
+            100% { transform: translateY(0); opacity: 1 }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.9); opacity: 0 }
+            100% { transform: scale(1); opacity: 1 }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>My Projects</h2>
+        <div class="projects-gallery">
+            <!-- Loop starts for each project -->
+            <!-- Project 1 -->
+            <div class="project-item">
+                <h3>  Temple Accomodation website  </h3>
+                <p class="project-description">Saurav Raj – Temple Accommodation Website Developer
+
+Saurav Raj successfully developed a dedicated temple accommodation website for Shri Yalguresh Samny Temple, located in Bijapura, Karnataka. This project was designed to streamline the booking process for pilgrims and visitors, offering a user-friendly interface to view available rooms, make reservations, and receive booking confirmations online. Saurav implemented features such as real-time availability updates, contact information, and temple details to enhance visitor experience and support temple operations. His work has helped bridge traditional religious tourism with modern digital convenience, benefiting both devotees and temple management.</p>
+                <div class="screenshot-gallery">
+                    <img src="HOME.jpg" alt="Project 1 Screenshot 1">
+                    <img src="ROOM.jpg" alt="Project 1 Screenshot 2">
+                    <img src="GLERY.jpg" alt="Project 1 Screenshot 3">
+                    <img src="ABOUT.jpg" alt="Project 1 Screenshot 4">
+                </div>
+                <div class="project-links">
+                    <a href="Final Report (3).pdf" target="_blank">View PDF</a>
+                    <a href="Final Report (3).docx" target="_blank">Download Word Doc</a>
+                    <a href="HOME.jpg" target="_blank">View Image</a>
+                </div>
+            </div>
+
+            <!-- Repeat for Project 2 to 8 -->
+            <!-- For brevity, here’s a shortened example for Project 2 (copy and update paths accordingly) -->
+            <div class="project-item">
+                <h3>  VOICE CHANGER PRO  </h3>
+                <p class="project-description">Project 2 description goes here. This includes design, frontend, and backend logic.</p>
+                <div class="screenshot-gallery">
+                    <img src="LOGIN.png" alt="Project 2 Screenshot 1">
+                    <img src="REGISTOR.png" alt="Project 2 Screenshot 2">
+                    <img src="HOME.png" alt="Project 2 Screenshot 3">
+                    <img src="HOME2.png" alt="Project 2 Screenshot 4">
+                    <img src="DASHBOAR.png" alt="Project 2 Screenshot 5">
+                    <img src="CONTACT.png" alt="Project 2 Screenshot 6">
+                    <img src="CHNAGER.png" alt="Project 2 Screenshot 7">
+                    <img src="TRANSFORMER.png" alt="Project 2 Screenshot 8">
+                    <img src="AI.png" alt="Project 2 Screenshot 9">
+                    <img src="MAX.png" alt="Project 2 Screenshot 10">
+                    <img src="WATCH.png" alt="Project 2 Screenshot 11">
+                    <img src="TRIG.png" alt="Project 2 Screenshot 12">
+                    <img src="TRIO.png" alt="Project 2 Screenshot 13">
+                    <img src="GONE.png" alt="Project 2 Screenshot 14">
+                    <img src="YES.png" alt="Project 2 Screenshot 15">
+                </div>
+                <div class="project-links">
+                    <a href="voice changer website report.pdf" target="_blank">View PDF</a>
+                    <a href="voice changer website report.pdf" target="_blank">Download Word Doc</a>
+                    <a href="projects/project2_img1.jpg" target="_blank">View Image</a>
+                </div>
+            </div>
+
+            <!-- Copy & Replace for projects 3 to 8 -->
+            <!-- project3_img1.jpg to project8_img10.jpg etc. -->
+        </div>
+    </div>
+</body>
+
+</html>
